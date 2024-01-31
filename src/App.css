@@ -1,15 +1,16 @@
 
 header {
-  display:flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+  padding: 0 2rem;
 }
 
 .Header {
-  width: 1100px;
+  grid-column: 3 / span 8;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem 0.5rem;
 }
 
 nav a {
@@ -18,26 +19,29 @@ nav a {
 }
 
 nav li {
-  display: inline;
-  margin-right: 20px;
+  display: inline-flex;
+  padding: 0 0.5rem;
 }
 
 footer {
   background-color: #495E57;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+  padding: 0 2rem;
 }
 
 .Footer {
-  width: 1100px;
+  grid-column: 3 / span 8;
   display: flex;
-  align-items:flex-start;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 0.5rem 0.5rem;
+  padding: 1rem 0;
 }
 
 .Footer nav li{
   display:flex;
+  padding:0;
 }
 
 .Footer nav a {
