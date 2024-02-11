@@ -6,7 +6,7 @@ export default function NavItems(props) {
       <NavLink to='/' {...props}>Home</NavLink>
       <NavLink to='#' {...props}>About</NavLink>
       <NavLink to='#' {...props}>Menu</NavLink>
-      <NavLink to='#' {...props}>Reservations</NavLink>
+      <NavLink to='Reservations' {...props}>Reservations</NavLink>
       <NavLink to='#' {...props}>Order Online</NavLink>
       <NavLink to='#' {...props}>Login</NavLink>
     </>
