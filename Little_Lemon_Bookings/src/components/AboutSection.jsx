@@ -4,6 +4,7 @@ import {
     Grid,
     GridItem,
     Box,
+    Stack,
     VStack,
     Image,
     HStack
@@ -54,38 +55,24 @@ export default function AboutSection() {
                   colSpan={{ base: '4', md: '8', lg: '7' }}
                   colStart={{ base: '1', md: '1', lg: '7' }}
               >
-                  <HStack
-                      w={"100%"}
-                      h={"100%"}
+                  <Stack
+                      direction={'column'}
+                      maxH={'500px'}
+                      spacing={5}
                   >
-                      <Box
-                          w={'50%'}
-                          h={'350px'}
+                      <Image
+                          objectFit={'cover'}
                           borderRadius={'2rem'}
-                      >
-                          <Image
-                              objectFit={'cover'}
-                              objectPosition={'right'}
-                              borderRadius={'2rem'}
-                              src={chefImage1}
-                              h={'100%'}
-                          />
-                      </Box>
-
-                      <Box
-                          w={'50%'}
-                          h={'350px'}
+                          src={chefImage2}
+                          h={'220px'}
+                      />
+                      <Image
+                          objectFit={'cover'}
                           borderRadius={'2rem'}
-                      >
-                          <Image
-                              objectFit={'cover'}
-                              objectPosition={'right'}
-                              borderRadius={'2rem'}
-                              src={chefImage2}
-                              h={'100%'}
-                          />
-                      </Box>
-                  </HStack>
+                          src={chefImage1}
+                          h={'220px'}
+                      />
+                  </Stack>
               </GridItem>
           </Grid>
       </Box>

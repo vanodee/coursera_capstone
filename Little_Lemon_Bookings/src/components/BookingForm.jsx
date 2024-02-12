@@ -1,16 +1,21 @@
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import {
-    Heading,
-    VStack,
     FormControl,
     FormLabel,
     Input,
-    Button,
     Select,
-} from "@chakra-ui/react";
+    Button,
+    FormErrorMessage,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
+} from '@chakra-ui/react';
 
-import { useState } from "react";
-import { useReducer } from "react";
-
+import { useReducer, useState } from 'react';
 
 
 // BOOKING SLOT SETUP WITH REDUCER
@@ -65,108 +70,195 @@ export const updateTimes = (state, action) => {
 };
 
 
-
-
-
 export default function BookingForm() {
-    const [state, dispatch] = useReducer(updateTimes, initializeTimes);
 
-    // FORM SETUP
-    const [formData, setFormData] = useState({
-        name: "",
-        date: "",
-        time: "",
-        numberOfGuests: "",
-        occasion: "",
+    //
+    const [state, dispatch] = useReducer(updateTimes, initializeTimes);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [submittedValues, setSubmittedValues] = useState(null);
+
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            date: '',
+            time: '',
+            numberOfGuests: '',
+            occasion: '',
+        },
+        validationSchema: Yup.object({
+            name: Yup.string().required('Name is required'),
+            date: Yup.string().required('Date is required'),
+            time: Yup.string().required('Time is required'),
+            numberOfGuests:
+                Yup.number()
+                .min(1, 'Must be at least 1 number')
+                .integer('Guest count must be a Whole Number')
+                .positive('Guest count must be a positive number')
+                .required('Guest count is required'),
+            occasion: Yup.string().required('Occasion is required'),
+        }),
+        onSubmit: (values, actions) => {
+            // Handle form submission
+            console.log('Form submitted with values:', values);
+
+            // Get the selected time slot from the form data
+            const selectedTimeSlot = values.time;
+
+            // Find the corresponding ID of the selected time slot
+            const selectedTimeSlotId = state.availableTimes.find(time => time.timeSlot === selectedTimeSlot).id;
+
+            // Dispatch the action with the ID of the selected time slot
+            dispatch({ type: "BOOK_TIME", payload: selectedTimeSlotId });
+
+            //Reset all Form fields
+            actions.resetForm();
+
+            // Store submitted values for displaying in the Success modal
+            setSubmittedValues(values);
+
+            // Open the modal
+            setIsModalOpen(true);
+        },
     });
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        //Log Form Data to console
-        console.log(formData);
-
-        // Get the selected time slot from the form data
-        const selectedTimeSlot = formData.time;
-
-        // Find the corresponding ID of the selected time slot
-        const selectedTimeSlotId = state.availableTimes.find(time => time.timeSlot === selectedTimeSlot).id;
-
-        // Dispatch the action with the ID of the selected time slot
-        dispatch({ type: "BOOK_TIME", payload: selectedTimeSlotId });
-
-        // Clear the form fields
-        setFormData({
-            name: "",
-            date: "",
-            time: "",
-            numberOfGuests: "",
-            occasion: "",
-        });
-    };
+    //Custom Form Styling
+    const inputFieldStyles = {
+        bg: 'highlight.1',
+        focusBorderColor:'primary.2'
+    }
+    const errorStyles = {
+        bg: 'crimson',
+        justifyContent: 'center',
+        borderRadius: '0.3rem',
+        color: 'white',
+    }
 
     return (
-        <VStack
-            spacing={10}
-            p={'30px'}
-            bg="rgba(73, 94, 87, 0.78)"
-            borderRadius={'1.5rem'}
-            // color={'white'}
-            backdropFilter={'auto'}
-            backdropBlur={'8px'}
-        >
-            <Heading
-                as='h2'
-                color={'white'}
-                fontSize={{ sm: '2xl', md: '3xl', lg: '4xl' }}
-                pl={'1rem'}
+        <>
+            <form
+                style={{width: "100%"}}
+                onSubmit={formik.handleSubmit}
             >
-                Reserve a Table
-            </Heading>
+                <FormControl isInvalid={formik.errors.name && formik.touched.name} isRequired h={'120px'}>
+                    <FormLabel htmlFor="name" color={'white'}>Name</FormLabel>
+                    <Input
+                        id="name"
+                        name="name"
+                        type="text"
+                        onChange={formik.handleChange}
+                        value={formik.values.name}
+                        onBlur={formik.handleBlur}
+                        bg={'highlight.1'}
+                        focusBorderColor='primary.2'
+                    />
+                    <FormErrorMessage sx={errorStyles}>
+                        {formik.errors.name}
+                    </FormErrorMessage>
+                </FormControl>
 
-            <FormControl id="name" isRequired>
-                <FormLabel>Name</FormLabel>
-                <Input type="text" name="name" value={formData.name} onChange={handleChange} />
-            </FormControl>
+                <FormControl isInvalid={formik.errors.date && formik.touched.date} isRequired h={'120px'}>
+                    <FormLabel htmlFor="date" color={'white'}>Date</FormLabel>
+                    <Input
+                        id="date"
+                        name="date"
+                        type="date"
+                        onChange={formik.handleChange}
+                        value={formik.values.date}
+                        onBlur={formik.handleBlur}
+                        sx={inputFieldStyles}
+                    />
+                    <FormErrorMessage sx={errorStyles}>
+                        {formik.errors.date}
+                    </FormErrorMessage>
+                </FormControl>
 
-            <FormControl id="date" isRequired>
-                <FormLabel>Date</FormLabel>
-                <Input type="date" name="date" value={formData.date} onChange={handleChange} />
-            </FormControl>
 
-            <FormControl id="time" isRequired>
-                <FormLabel>Time</FormLabel>
-                <Select placeholder='Please Pick a Time' name="time" value={formData.time} onChange={handleChange}>
-                    {state.availableTimes.map((availableTime) => (
-                        <option key={availableTime.id} value={availableTime.timeSlot} disabled={availableTime.booked}>
-                            {availableTime.booked ? `${availableTime.timeSlot} (Booked)` : availableTime.timeSlot}
-                        </option>
-                    ))}
-                </Select>
-            </FormControl>
+                <FormControl isInvalid={formik.errors.time && formik.touched.time} isRequired h={'120px'}>
+                    <FormLabel htmlFor="time" color={'white'}>Time</FormLabel>
+                    <Select
+                        id="time"
+                        name="time"
+                        onChange={formik.handleChange}
+                        value={formik.values.time}
+                        onBlur={formik.handleBlur}
+                        placeholder='Please Pick a Time'
+                        sx={inputFieldStyles}
+                    >
+                        {state.availableTimes.map((availableTime) => (
+                            <option key={availableTime.id} value={availableTime.timeSlot} disabled={availableTime.booked}>
+                                {availableTime.booked ? `${availableTime.timeSlot} (Booked)` : availableTime.timeSlot}
+                            </option>
+                        ))}
+                    </Select>
+                    <FormErrorMessage sx={errorStyles}>
+                        {formik.errors.time}
+                    </FormErrorMessage>
+                </FormControl>
 
-            <FormControl id="numberOfGuests" isRequired>
-                <FormLabel>Number Of Guests</FormLabel>
-                <Input type="number" name="numberOfGuests" value={formData.numberOfGuests} onChange={handleChange} />
-            </FormControl>
+                <FormControl isInvalid={formik.errors.numberOfGuests && formik.touched.numberOfGuests} isRequired h={'120px'}>
+                    <FormLabel htmlFor="numberOfGuests" color={'white'}>Number Of Guests</FormLabel>
+                    <Input
+                        id="numberOfGuests"
+                        name="numberOfGuests"
+                        type="number"
+                        onChange={formik.handleChange}
+                        value={formik.values.numberOfGuests}
+                        onBlur={formik.handleBlur}
+                        sx={inputFieldStyles}
+                    />
+                    <FormErrorMessage sx={errorStyles}>
+                        {formik.errors.numberOfGuests}
+                    </FormErrorMessage>
+                </FormControl>
 
-            <FormControl id="occasion" isRequired>
-                <FormLabel>Occasion</FormLabel>
-                <Select placeholder='Tell Us the Occasion' name="occasion" value={formData.occasion} onChange={handleChange}>
+                <FormControl isInvalid={formik.errors.occasion && formik.touched.occasion} isRequired h={'120px'}>
+                    <FormLabel htmlFor="occasion" color={'white'}>Occasion</FormLabel>
+                    <Select
+                        id="occasion"
+                        name="occasion"
+                        onChange={formik.handleChange}
+                        value={formik.values.occasion}
+                        onBlur={formik.handleBlur}
+                        placeholder="What's the Occasion ?"
+                        sx={inputFieldStyles}
+                    >
                         <option value='Birthday'>Birthday</option>
                         <option value='Anniversary'>Anniversary</option>
-                </Select>
-            </FormControl>
+                    </Select>
+                    <FormErrorMessage sx={errorStyles}>
+                        {formik.errors.occasion}
+                    </FormErrorMessage>
+                </FormControl>
 
-            <Button bg="primary.2" onClick={handleSubmit}>Submit</Button>
-        </VStack>
-    );
-};
+                <Button bg="primary.2" type="submit">Submit</Button>
+            </form>
+
+            <Modal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            >
+                <ModalOverlay />
+                <ModalContent
+                    bg={'green.500'}
+                    color={'white'}
+                >
+                    <ModalHeader>Reservation Succesful!</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {submittedValues && (
+                            <p>Thank You for choosing Little Lemon, {submittedValues.name}.
+                                <br />
+                                Your booking for {submittedValues.date} at {submittedValues.time} has been confirmed.
+                                <br />
+                                We'll be expecting you and your guests for an awesome {submittedValues.occasion} celebration.
+                                <br />
+                                See you soon!
+                            </p>
+                        )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+        </>
+  )
+}

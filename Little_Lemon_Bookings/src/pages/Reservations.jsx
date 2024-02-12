@@ -1,10 +1,9 @@
 import {
-    Heading,
     Grid,
     GridItem,
     Box,
-    Button,
-    Flex,
+    VStack,
+    Heading,
 } from "@chakra-ui/react";
 
 import BookingForm from "../components/BookingForm";
@@ -16,7 +15,7 @@ export default function Reservations() {
           <Box
               as='section'
               bg={`url(${BookingBG}) center/cover no-repeat`}
-              pt={'50px'}
+              pt={'60px'}
               py={'100px'}
           >
               <Grid
@@ -30,10 +29,28 @@ export default function Reservations() {
                   textColor={'highlight.2'}
               >
                   <GridItem
-                      colSpan={{ sm: '4', md: '8', lg: '8' }}
-                      colStart={{ sm: '4', md: '8', lg: '3' }}
+                      colSpan={{ sm: '4', md: '6', lg: '8' }}
+                      colStart={{ sm: '1', md: '2', lg: '3' }}
                   >
-                      <BookingForm />
+                      <VStack
+                          spacing={10}
+                          p={'30px'}
+                          bg="rgba(73, 94, 87, 0.78)"
+                          borderRadius={'1.5rem'}
+                          backdropFilter={'auto'}
+                          backdropBlur={'8px'}
+                      >
+                          <Heading
+                              as='h2'
+                              color={'white'}
+                              fontSize={{ base: '3xl', md: '3xl', lg: '4xl' }}
+                              pl={'1rem'}
+                          >
+                              Reserve a Table
+                          </Heading>
+
+                          <BookingForm />
+                      </VStack>
                   </GridItem>
                 </Grid>
           </Box>

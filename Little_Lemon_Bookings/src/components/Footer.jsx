@@ -31,7 +31,7 @@ function Footer() {
                             display={{ base: "flex", md: "none" }}
                             src={Logo_white_2}
                             alt='Little Lemon Logo (White)'
-                            maxW={'250px'}
+                            maxW={'200px'}
                         />
                     </NavLink>
                 </GridItem>

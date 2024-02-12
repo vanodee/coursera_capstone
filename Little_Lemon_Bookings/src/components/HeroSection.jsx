@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 
 import HeroImage from '../assets/restauranfood.png';
+import { NavLink } from "react-router-dom";
 
 
 
@@ -18,8 +19,9 @@ export default function HeroSection() {
       <Box
           as='section'
           bg={'primary.1'}
-          maxH={'350px'}
-          mb={{md:'50px',lg:'150px'}}
+          maxH={{md:"", lg:'350px'}}
+          mb={{ md: '50px', lg: '150px' }}
+          pt={'60px'}
       >
           <Grid
               templateColumns={{ base:'repeat(4, 1fr)', md:'repeat(8, 1fr)', lg:'repeat(12, 1fr)' }}
@@ -36,18 +38,23 @@ export default function HeroSection() {
                     >
                         <Box>
                           <Heading
-                              fontSize={{ sm:'4xl', lg:'6xl' }}
+                              fontSize={{ base: '2xl', sm: '3xl', lg:'6xl' }}
                               color={'primary.2'}
                           >
                               Little Lemon
                           </Heading>
-                            <Heading color={'highlight.1'}>Chicago</Heading>
+                          <Heading
+                              fontSize={{ base: '2xl', sm: '2xl', lg: '4xl' }}
+                              color={'highlight.1'}
+                          >
+                              Chicago
+                          </Heading>
                         </Box>
                         <Text color={'highlight.1'}>
                             We are a family owned Mediterranean restaurant,
                             focused on traditional recipes served with a modern twist.
                         </Text>
-                        <Button bg={'primary.2'}>Reserve a Table</Button>
+                      <NavLink to={'Reservations'}><Button bg={'primary.2'}>Reserve a Table</Button></NavLink>
                     </VStack>
               </GridItem>
 
@@ -55,14 +62,14 @@ export default function HeroSection() {
                   colSpan={{ base: '2', md: '5', lg: '7' }}
                   justifySelf={'end'}
               >
-                    <Image
-                        src={HeroImage}
-                        alt="Little Lemon Hero Image"
-                        w={{ base: '250px', md: '400px', lg: '450px' }}
+                  <Image
+                      src={HeroImage}
+                      alt="Little Lemon Hero Image"
+                      w={{ base: '250px', md: '400px', lg: '450px' }}
                       h={{ base: '250px', md: '270px', lg: '450px' }}
-                        objectFit={'cover'}
-                        borderRadius={'2rem'}
-                    />
+                      objectFit={'cover'}
+                      borderRadius={'2rem'}
+                  />
               </GridItem>
           </Grid>
       </Box>

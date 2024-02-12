@@ -55,9 +55,9 @@ export default function SpecialsSection() {
               alignItems={'center'}
               textColor={'highlight.2'}
           >
-              <GridItem colSpan={{sm:'4', md:'12', lg:'12'}}>
+              <GridItem colSpan={{base:'4', md:'12', lg:'12'}}>
                   <Flex justifyContent={'space-between'} alignItems={'center'} mb={'2rem'}>
-                      <Heading as='h2' color={'highlight.2'} fontSize={{ sm: '2xl', md:'4xl', lg:'5xl'}}>Specials</Heading>
+                      <Heading as='h2' color={'highlight.2'} fontSize={{ base: '2xl', md:'4xl', lg:'5xl'}}>Specials</Heading>
                       <Button bg={'primary.2'}>Online Menu</Button>
                   </Flex>
               </GridItem>

@@ -74,7 +74,7 @@ export default function TestimonialSection() {
                     textColor={'highlight.2'}
                 >
                   <GridItem colSpan={{ sm: '4', md: '8', lg: '12' }}>
-                      <Heading as='h2' color={'white'} fontSize={{ sm: '4xl', md: '4xl', lg: '5xl' }} mb={'2rem'}>Testimonials</Heading>
+                      <Heading as='h2' color={'white'} fontSize={{ base: '4xl', md: '4xl', lg: '5xl' }} mb={'2rem'}>Testimonials</Heading>
                     </GridItem>
 
                     {reviews.map((review, index) => (
@@ -82,7 +82,11 @@ export default function TestimonialSection() {
                             colSpan={{ sm: '2', md: '4', lg: '3' }}
                             key={index}
                         >
-                            <Card borderRadius={'1.5rem'} boxShadow={'lg'}>
+                            <Card
+                                borderRadius={'1.5rem'}
+                                boxShadow={'lg'}
+                                minH={'280px'}
+                            >
                                 <CardBody>
                                     <Stack direction={'column'} align={'left'} spacing={5}>
                                         <Flex bg={'secondary.1'} maxW={'25%'} justifyContent={'center'} borderRadius={'0.5rem'}>

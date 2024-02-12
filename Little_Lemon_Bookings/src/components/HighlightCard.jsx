@@ -17,6 +17,7 @@ export default function HighlightCard(props) {
           bg={'highlight.1'}
           borderTopRadius='2rem'
           key={props.id}
+          _hover={{boxShadow:"2xl"}}
       >
           <Image
               objectFit={'cover'}
@@ -25,7 +26,7 @@ export default function HighlightCard(props) {
               alt={props.Title}
               borderTopRadius='2rem'
           />
-          <CardBody>
+          <CardBody minH={{md:'300px'}}>
               <Stack mt='6' spacing='3'>
                   <Flex justifyContent={'space-between'} alignItems={'center'}>
                       <Heading size='md'>{props.Title}</Heading>

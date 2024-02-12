@@ -9,12 +9,15 @@ import {
     DrawerContent,
     DrawerCloseButton,
     useDisclosure,
-    Button,
+    IconButton
 } from "@chakra-ui/react"
+
+import { HamburgerIcon } from "@chakra-ui/icons"
 
 import { useRef } from "react";
 
 import NavItems from "./NavItems";
+
 
 
 
@@ -26,20 +29,20 @@ function Nav() {
     return (
         <>
             <HStack
-                spacing={4}
+                spacing={2}
                 display={{ base: "none", lg: "flex" }}
             >
                 <NavItems />
             </HStack>
 
-            <Button
+            <IconButton
+                aria-label='Open Navigation'
                 ref={btnRef}
                 bg='primary.2'
                 onClick={onOpen}
                 display={{ base: "block", md: "block", lg: "none" }}
-            >
-                Open
-            </Button>
+                icon={<HamburgerIcon />}
+            />
 
             <Drawer
                 isOpen={isOpen}
@@ -54,7 +57,7 @@ function Nav() {
                     <DrawerHeader>Navigation</DrawerHeader>
 
                     <DrawerBody>
-                        <VStack>
+                        <VStack spacing="1rem">
                             <NavItems onClick={onClose} />
                         </VStack>
                     </DrawerBody>
