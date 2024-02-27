@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 
 //Images
-import bruchetta from '../assets/bruchetta.svg';
+import bruchetta from '../assets/bruchetta.png';
 import greekSalad from '../assets/greek salad.jpg';
 import lemonDessert from '../assets/lemon dessert.jpg';
 
